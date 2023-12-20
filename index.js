@@ -1,55 +1,45 @@
-import JSConfetti from "js-confetti";
-const word = "santa";
-const wordArr = word.split("");
-const wordDisplay = document.getElementById("word-display");
-document.addEventListener("submit", handleGuess);
+const dangerArray = [
+  ["🎅", "👺"],
+  [
+    ["🎅", "🦁"],
+    ["👹", "🎅"],
+  ],
+  [
+    [
+      ["🎅", "🐻"],
+      ["🧌", "🎅"],
+    ],
+    [
+      ["🐯", "🎅"],
+      ["🎅", "😈"],
+    ],
+  ],
+];
 
-function renderSpaces() {
-  const wordHtml = wordArr.map(() => {
-    return `<span class="letter">-</span>`;
-  });
-  wordDisplay.innerHTML = wordHtml.join("");
+const output = document.querySelector(".output");
+
+// First, I will need to create a DOM element to contain and display any 'santa's' that are found...
+function displaySantaOnDOM(element) {
+  const div = document.createElement("div");
+  div.innerText = element;
+  div.className = "santa-element";
+  output.appendChild(div);
 }
-renderSpaces();
 
-function renderGuess(arr) {
-  const wordHtml = arr.map((letter) => {
-    const guessColor = letter === "-" ? "red" : "green";
-    return `<span class="letter ${guessColor}">${letter}</span>`;
-  });
-  wordDisplay.innerHTML = wordHtml.join("");
-}
-
-function handleGuess(e) {
-  e.preventDefault();
-
-  let currentState = [];
-  let input = document.getElementById("user-input");
-  let guess = input.value.toLowerCase();
-  if (!guess.trim()) return;
-  const guessArr = guess.split("");
-  guessArr.forEach((letter, index) => {
-    if (letter === word[index]) {
-      currentState.push(letter);
-    } else {
-      currentState.push("-");
+// I've not done recursion before - at first it was hard to get my head round it...here's what I found out:
+// 1. create a for of loop to iterate over the array...
+function findAndDisplaySanta(array) {
+  for (const element of array) {
+    //   This line below checks if the current element being iterated is itself an array...(I had no idea this could be done!)
+    if (Array.isArray(element)) {
+      // below ...this hurt my head a little...so, if the current element is an array, the function calls itself (this is called recursively)
+      findAndDisplaySanta(element);
+      //   to end, if the current element is not an array, the function checks if it is equal to the string "🎅".
+    } else if (element === "🎅") {
+      // if so, the target / element is displayed on the DOM...calling the function I created earlier...
+      displaySantaOnDOM(element);
     }
-  });
-
-  renderGuess(currentState);
-  checkWin(guess);
-  input.value = "";
-}
-
-function checkWin(guess) {
-  if (word === guess) {
-    const jsConfetti = new JSConfetti();
-    jsConfetti.addConfetti({
-      emojis: ["❄️", "🎄", "🎅"],
-      emojiSize: 50,
-      confettiNumber: 60,
-      confettiRadius: 6,
-    });
-    jsConfetti.addConfetti();
   }
 }
+
+findAndDisplaySanta(dangerArray);
