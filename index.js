@@ -39,6 +39,9 @@ function clearPeopleListEl() {
 
 function clearInputFieldEl() {
   inputFieldEl.value = "";
+  document.querySelector(".icon-container").innerHTML = `
+  <img src="/icon.png"/>
+  `;
 }
 
 function appendPersonToPeopleListEl(person) {
@@ -54,6 +57,10 @@ function appendPersonToPeopleListEl(person) {
     saveDataToLocalStorage();
 
     renderList(people);
+
+    document.querySelector(".icon-container").innerHTML = `
+    <img src="https://media.giphy.com/media/3ohhwi25ISXC7Z4tMs/giphy.gif" class="gif-size" alt="funny gif"/>
+    `;
   });
 
   peopleListEl.append(newEl);

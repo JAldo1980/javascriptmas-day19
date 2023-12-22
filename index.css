@@ -165,3 +165,8 @@ ul li:hover {
   background-color: #e33d52;
   cursor: pointer;
 }
+
+.gif-size {
+  width: 350px;
+  margin: 0 auto;
+}
