@@ -4,11 +4,18 @@ const inputFieldEl = document.getElementById("input-field");
 const addButtonEl = document.getElementById("add-button");
 const peopleListEl = document.getElementById("people-list");
 
+window.addEventListener("load", function () {
+  loadDataFromLocalStorage();
+  renderList(people);
+});
+
 addButtonEl.addEventListener("click", function () {
   let inputValue = inputFieldEl.value;
 
   if (inputValue) {
     people.push(inputValue);
+
+    saveDataToLocalStorage();
 
     clearInputFieldEl();
 
@@ -44,8 +51,19 @@ function appendPersonToPeopleListEl(person) {
 
     people.splice(index, 1);
 
+    saveDataToLocalStorage();
+
     renderList(people);
   });
 
   peopleListEl.append(newEl);
+}
+
+function saveDataToLocalStorage() {
+  localStorage.setItem("people", JSON.stringify(people));
+}
+
+function loadDataFromLocalStorage() {
+  const storedData = localStorage.getItem("people");
+  people = storedData ? JSON.parse(storedData) : [];
 }
